@@ -1,0 +1,59 @@
+# Binaries and build artifacts
+/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Environment and configuration
+.env
+*.env
+.env.*
+!.env.example
+
+# Dependencies
+/vendor/
+/go.work
+
+# Logs
+*.log
+/logs/
+
+# Database
+/data/
+*.db
+*.sqlite
+
+# Test coverage
+coverage.txt
+coverage.html
+
+# Temporary files
+/tmp/
+/temp/
+
+# Generated files
+*.gen.go
+*.pb.go
+*.mock.go
+
+# Docker volumes
+postgres_data/
+
+# Debug files
+__debug_bin
+debug.test
+
+# Air live reload
+tmp/
