@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary hover:bg-primary/90 text-white;
+  }
+  
+  .btn-outline {
+    @apply btn border border-border hover:bg-background-light;
+  }
+
+  .card {
+    @apply bg-background-light rounded-xl shadow-card p-4;
+  }
+
+  .input {
+    @apply bg-background border-border rounded-lg focus:ring-primary focus:border-primary;
+  }
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/50;
+}
