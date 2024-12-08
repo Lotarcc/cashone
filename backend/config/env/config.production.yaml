@@ -1,0 +1,137 @@
+# Production configuration
+
+server:
+  port: ${API_PORT:-8081}
+  timeout: 30
+  env: production
+  cors:
+    allowed_origins: ${CORS_ALLOWED_ORIGINS}
+    allowed_methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowed_headers:
+      - Authorization
+      - Content-Type
+    allow_credentials: true
+    max_age: 3600
+
+database:
+  host: ${DB_HOST}
+  port: ${DB_PORT:-5432}
+  name: ${CASHONE_DATABASE_NAME}
+  user: ${CASHONE_DATABASE_USER}
+  password: ${CASHONE_DATABASE_PASSWORD}
+  max_open_conns: 100
+  max_idle_conns: 10
+  conn_max_lifetime: 3600s
+  ssl_mode: require
+
+monobank:
+  api_url: https://api.monobank.ua
+  webhook_url: ${MONOBANK_WEBHOOK_URL}
+  request_timeout: 30
+
+logger:
+  level: info
+  encoding: json
+  output_paths:
+    - stdout
+    - /var/log/cashone/app.log
+  error_output_paths:
+    - stderr
+    - /var/log/cashone/error.log
+
+security:
+  jwt:
+    secret: ${CASHONE_JWT_SECRET}
+    expiration: 1h
+    refresh_expiration: 24h
+
+metrics:
+  enabled: true
+  prometheus:
+    enabled: true
+    path: /metrics
+    auth:
+      enabled: true
+      username: ${METRICS_USER}
+      password: ${METRICS_PASSWORD}
+
+profiling:
+  enabled: false
+  path: /debug/pprof
+  auth:
+    enabled: true
+    username: ${PROFILING_USER}
+    password: ${PROFILING_PASSWORD}
+
+swagger:
+  enabled: false
+
+health:
+  enabled: true
+  path: /health
+  detailed: false
+
+cache:
+  enabled: true
+  type: redis
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:-6379}
+    password: ${REDIS_PASSWORD}
+    db: 0
+  ttl: 3600
+
+rate_limiter:
+  enabled: true
+  requests_per_second: 50
+  burst: 100
+  type: redis
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:-6379}
+    password: ${REDIS_PASSWORD}
+    db: 1
+
+feature_flags:
+  monobank_integration: true
+  manual_transactions: true
+  category_management: true
+  user_preferences: true
+  export_data: true
+
+monitoring:
+  sentry:
+    enabled: true
+    dsn: ${SENTRY_DSN}
+    environment: production
+    traces_sample_rate: 0.1
+  newrelic:
+    enabled: true
+    license_key: ${NEWRELIC_LICENSE_KEY}
+    app_name: "CashOne"
+
+backup:
+  enabled: true
+  schedule: "0 0 * * *"  # Daily at midnight
+  retention_days: 30
+  storage:
+    type: s3
+    bucket: ${BACKUP_BUCKET}
+    region: ${AWS_REGION}
+    access_key: ${AWS_ACCESS_KEY}
+    secret_key: ${AWS_SECRET_KEY}
+
+security_headers:
+  enabled: true
+  hsts_max_age: 31536000
+  frame_options: DENY
+  content_security_policy: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'"
+  x_content_type_options: nosniff
+  x_frame_options: DENY
+  x_xss_protection: "1; mode=block"
+  referrer_policy: strict-origin-when-cross-origin

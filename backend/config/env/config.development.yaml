@@ -1,0 +1,93 @@
+# Development configuration
+
+server:
+  port: 8081
+  timeout: 10
+  env: development
+  cors:
+    allowed_origins:
+      - "http://localhost:3000"
+    allowed_methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowed_headers:
+      - Authorization
+      - Content-Type
+    allow_credentials: true
+    max_age: 300
+
+database:
+  host: localhost
+  port: 5432
+  name: cashone_db
+  user: cashone_user
+  password: cashone_password
+  max_open_conns: 25
+  max_idle_conns: 25
+  conn_max_lifetime: 300s
+
+monobank:
+  api_url: https://api.monobank.ua
+  webhook_url: ""  # Will be set during deployment
+  request_timeout: 30
+
+logger:
+  level: debug
+  encoding: console  # can be json or console
+  output_paths:
+    - stdout
+    - logs/app.log
+  error_output_paths:
+    - stderr
+    - logs/error.log
+
+security:
+  jwt:
+    secret: development-secret-key
+    expiration: 24h
+    refresh_expiration: 168h  # 7 days
+
+metrics:
+  enabled: true
+  prometheus:
+    enabled: true
+    path: /metrics
+
+profiling:
+  enabled: true
+  path: /debug/pprof
+
+swagger:
+  enabled: true
+  path: /swagger/*
+
+health:
+  enabled: true
+  path: /health
+  detailed: true
+
+cache:
+  enabled: true
+  type: memory  # can be memory or redis
+  ttl: 300  # 5 minutes
+
+rate_limiter:
+  enabled: true
+  requests_per_second: 100
+  burst: 50
+
+feature_flags:
+  monobank_integration: true
+  manual_transactions: true
+  category_management: true
+  user_preferences: true
+  export_data: true
+
+development:
+  reload: true
+  debug_sql: true
+  seed_data: true
+  Mock_monobank: true  # Use Mock Monobank API for development

@@ -17,7 +17,7 @@ GIT_COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 BUILD_TIME=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
 
 # Version file path
-VERSION_FILE="$PROJECT_ROOT/app/pkg/version/version.go"
+VERSION_FILE="$PROJECT_ROOT/pkg/version/version.go"
 
 echo -e "${YELLOW}Updating version information...${NC}"
 echo "Version:    $VERSION"

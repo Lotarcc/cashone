@@ -45,14 +45,23 @@ if ! command_exists swag; then
     install_swag
 fi
 
-# Change to app directory
-cd "$PROJECT_ROOT/app"
+# Change to project root
+cd "$PROJECT_ROOT"
 
 echo -e "${YELLOW}Cleaning existing documentation...${NC}"
 rm -rf docs
 
 echo -e "${YELLOW}Generating API documentation...${NC}"
-if ! swag init -g cmd/main.go --parseDependency --parseInternal; then
+if ! swag init \
+    -g cmd/main.go \
+    --parseDependency \
+    --parseInternal \
+    --parseDepth 1 \
+    --instanceName swagger \
+    --propertyStrategy camelcase \
+    --output docs \
+    --generatedTime \
+    --parseVendor=false; then
     echo -e "${RED}Failed to generate documentation${NC}"
     exit 1
 fi
@@ -64,14 +73,7 @@ if [ ! -f "docs/swagger.json" ] || [ ! -f "docs/swagger.yaml" ] || [ ! -f "docs/
 fi
 
 echo -e "${GREEN}API documentation generated successfully!${NC}"
-echo -e "Documentation will be available at: ${GREEN}http://localhost:8080/swagger/index.html${NC} when the server is running"
-
-# Create symlink to docs in project root if it doesn't exist
-DOCS_ROOT="$PROJECT_ROOT/docs"
-if [ ! -d "$DOCS_ROOT" ]; then
-    echo -e "${YELLOW}Creating docs symlink in project root...${NC}"
-    ln -s "$PROJECT_ROOT/app/docs" "$DOCS_ROOT"
-fi
+echo -e "Documentation will be available at: ${GREEN}http://localhost:8081/swagger/index.html${NC} when the server is running"
 
 echo -e "\n${GREEN}Documentation setup complete!${NC}"
 echo -e "You can now:"

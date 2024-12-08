@@ -7,6 +7,7 @@
 *.dylib
 *.test
 *.out
+/tmp/
 
 # IDE specific files
 .idea/
@@ -25,17 +26,21 @@ Thumbs.db
 # Dependencies
 /vendor/
 /go.work
+/go.work.sum
 
 # Logs
 *.log
 /logs/
+air.log
 
 # Database
 /data/
 *.db
 *.sqlite
+postgres_data/
 
 # Test coverage
+/coverage/
 coverage.txt
 coverage.html
 
@@ -46,10 +51,8 @@ coverage.html
 # Generated files
 *.gen.go
 *.pb.go
-*.mock.go
-
-# Docker volumes
-postgres_data/
+*.Mocks.go
+/docs/
 
 # Debug files
 __debug_bin
@@ -57,3 +60,24 @@ debug.test
 
 # Air live reload
 tmp/
+.air.toml
+
+# Swagger
+swagger.json
+swagger.yaml
+
+# Build artifacts
+dist/
+release/
+
+# OS specific
+.DS_Store
+*.swp
+*.swo
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Project specific
+/config/local.yaml

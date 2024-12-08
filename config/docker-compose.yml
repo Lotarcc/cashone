@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - CASHONE_DATABASE_USER=${CASHONE_DATABASE_USER}
+      - CASHONE_DATABASE_PASSWORD=${CASHONE_DATABASE_PASSWORD}
+      - CASHONE_DATABASE_NAME=${CASHONE_DATABASE_NAME}
+      - DB_PORT=5432
+      - MONOBANK_API_KEY=${MONOBANK_API_KEY}
+    volumes:
+      - ./backend:/app
+    networks:
+      - cashone-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - cashone-network
+
+  db:
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=${CASHONE_DATABASE_USER}
+      - POSTGRES_PASSWORD=${CASHONE_DATABASE_PASSWORD}
+      - POSTGRES_DB=${CASHONE_DATABASE_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cashone-network
+
+volumes:
+  postgres_data:
+
+networks:
+  cashone-network:
+    driver: bridge

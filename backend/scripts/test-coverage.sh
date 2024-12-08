@@ -14,10 +14,15 @@ NC='\033[0m' # No Color
 # Create coverage directory if it doesn't exist
 mkdir -p "$PROJECT_ROOT/coverage"
 
+# Make setup script executable and run it
+chmod +x "$PROJECT_ROOT/scripts/setup-test-db.sh"
+echo -e "${YELLOW}Setting up test database...${NC}"
+"$PROJECT_ROOT/scripts/setup-test-db.sh"
+
 echo -e "${YELLOW}Running tests with coverage...${NC}"
 
 # Change to app directory
-cd "$PROJECT_ROOT/app"
+cd "$PROJECT_ROOT"
 
 # Run tests with coverage
 go test -coverprofile="$PROJECT_ROOT/coverage/coverage.out" -covermode=atomic ./...

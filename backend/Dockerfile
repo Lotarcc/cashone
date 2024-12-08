@@ -8,13 +8,13 @@ RUN apk add --no-cache git make
 WORKDIR /app
 
 # Copy go mod files
-COPY app/go.mod app/go.sum ./
+COPY go.mod go.sum ./
 
 # Download dependencies
 RUN go mod download
 
 # Copy source code
-COPY app/ ./
+COPY . ./
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/cashone ./cmd
@@ -35,7 +35,7 @@ WORKDIR /app
 COPY --from=builder /go/bin/cashone .
 
 # Copy config files
-COPY app/config/config.yaml ./config/
+COPY config/config.yaml ./config/
 
 # Set ownership
 RUN chown -R appuser:appuser /app
@@ -44,7 +44,7 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Expose port
-EXPOSE 8080
+EXPOSE 8081
 
 # Run the application
 CMD ["./cashone"]

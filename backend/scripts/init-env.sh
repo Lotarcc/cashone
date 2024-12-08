@@ -21,15 +21,15 @@ else
     cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 
     # Generate random JWT secret
-    JWT_SECRET=$(openssl rand -base64 32)
+    CASHONE_JWT_SECRET=$(openssl rand -base64 32)
     
     # Replace the default JWT secret with the generated one
     if [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS
-        sed -i '' "s/your-secret-key-here/$JWT_SECRET/" "$PROJECT_ROOT/.env"
+        sed -i '' "s/your-secret-key-here/$CASHONE_JWT_SECRET/" "$PROJECT_ROOT/.env"
     else
         # Linux
-        sed -i "s/your-secret-key-here/$JWT_SECRET/" "$PROJECT_ROOT/.env"
+        sed -i "s/your-secret-key-here/$CASHONE_JWT_SECRET/" "$PROJECT_ROOT/.env"
     fi
 
     echo -e "${GREEN}Created .env file with secure JWT secret${NC}"

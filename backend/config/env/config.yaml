@@ -1,0 +1,79 @@
+server:
+  port: 8080
+  timeout: 10
+  env: development
+
+database:
+  host: ${CASHONE_DATABASE_HOST}
+  port: ${CASHONE_DATABASE_PORT}
+  name: ${CASHONE_DATABASE_NAME}
+  user: ${CASHONE_DATABASE_USER}
+  password: ${CASHONE_DATABASE_PASSWORD}
+  max_open_conns: 25
+  max_idle_conns: 25
+  conn_max_lifetime: 300
+
+monobank:
+  api_url: https://api.monobank.ua
+  webhook_url: ""  # Will be set during deployment
+  request_timeout: 30
+
+logger:
+  level: debug
+  encoding: json  # can be json or console
+  output_paths:
+    - stdout
+    - /var/log/cashone/app.log
+  error_output_paths:
+    - stderr
+    - /var/log/cashone/error.log
+
+cors:
+  allowed_origins:
+    - "http://localhost:3000"
+  allowed_methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed_headers:
+    - Authorization
+    - Content-Type
+  allow_credentials: true
+  max_age: 300
+
+security:
+  jwt:
+    secret: ${CASHONE_JWT_SECRET}
+    access_token_expiration: 15m  # 15 minutes
+    refresh_token_expiration: 168h  # 7 days
+    issuer: cashone
+    audience: cashone-api
+    cleanup_interval: 1h  # How often to clean up expired refresh tokens
+
+swagger:
+  enabled: true
+  path: /swagger/*
+
+health:
+  enabled: true
+  path: /health
+  detailed: true
+
+metrics:
+  enabled: true
+  prometheus:
+    enabled: true
+    path: /metrics
+
+profiling:
+  enabled: true
+  path: /debug/pprof
+
+feature_flags:
+  monobank_integration: true
+  manual_transactions: true
+  category_management: true
+  user_preferences: true
+  export_data: true
